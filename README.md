@@ -14,31 +14,36 @@ This crate does the same thing, only in Rust :)
 
 ## Getting started
 
-Start by adding the following to your Cargo.toml file:
+Just add the following to your Cargo.toml file:
 
 ```toml
 [dependencies]
-win_crypto = { git = "https://github.com/1Dragoon/win_crypto" }
+win_crypto = { git = "https://github.com/1Dragoon/win-crypto" }
 ```
 
+## Example usage
 Call it from your code:
 
 ```rust
 use std::{fs::{self, File}, writeln};
 use std::io::{BufWriter, Write};
 
-// Encrypt the string "veni vidi vici"...
-let file = File::create("token.txt").unwrap();
-let mut buffer = BufWriter::new(&file);
-// And store it in a file for later use...
-let encrypted = win_crypto::encrypt("veni vidi vici").unwrap();
-writeln!(buffer, "{}", encrypted).unwrap(); // Just for posterity, added a newline to it as well
-buffer.flush().unwrap();
-// Now retrieve it when we need it
-let read_file = fs::read_to_string("token.txt").unwrap();
-println!("Here is the encrypted string:\n{}", read_file.trim_end());
-let decrypted = win_crypto::decrypt(read_file.trim_end()).unwrap(); // Ensure newlines aren't sent to the decrypt function
-println!("Here is the decrypted string: {}", decrypted);
+fn main() {
+
+  // Encrypt the string "veni vidi vici"...
+  let file = File::create("token.txt").unwrap();
+  let mut buffer = BufWriter::new(&file);
+  // And store it in a file for later use...
+  let encrypted = win_crypto::encrypt("veni vidi vici").unwrap();
+  writeln!(buffer, "{}", encrypted).unwrap(); // Just for posterity, added a newline to it as well
+  buffer.flush().unwrap();
+
+  // Now retrieve it when we need it
+  let read_file = fs::read_to_string("token.txt").unwrap();
+  println!("Here is the encrypted string:\n{}", read_file.trim_end());
+  let decrypted = win_crypto::decrypt(read_file.trim_end()).unwrap(); // Ensure newlines aren't sent to the decrypt function
+  println!("Here is the decrypted string: {}", decrypted);
+}
 ```
 
 Have fun!

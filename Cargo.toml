@@ -1,0 +1,16 @@
+[package]
+name = "win_crypto"
+version = "0.0.1"
+authors = ["Dragoon <no public@email.address>"]
+description = "A simple wrapper for Microsoft Windows DPAPI for encrypting and decrypting strings for data at rest. Use it in cases where you have password authentication but don't want to keep plaintext passwords in your code."
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+windows = "0.2.1"
+hex = "0.4.2"
+widestring = "0.4.3"
+
+[build-dependencies]
+windows = "0.2.1"

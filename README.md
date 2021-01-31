@@ -25,9 +25,10 @@ win_crypto = { git = "https://github.com/1Dragoon/win-crypto" }
 Call it from your code:
 
 ```rust
+use std::{fs::{self, File}, writeln};
+use std::io::{BufWriter, Write};
+
 fn main() {
-  use std::{fs::{self, File}, writeln};
-  use std::io::{BufWriter, Write};
 
   // Encrypt the string "veni vidi vici"...
   let file = File::create("token.txt").unwrap();

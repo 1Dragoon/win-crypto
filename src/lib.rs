@@ -10,10 +10,33 @@ use bindings::{
     windows::win32::security::CRYPTOAPI_BLOB,
     windows::win32::system_services::LocalFree,
 };
-use windows::{Error, ErrorCode};
 
-pub fn decrypt(encrypted: &str) -> Result<String, windows::Error> {
-    let mut et_bytes = hex::decode(encrypted).unwrap();
+use std::fmt;
+use std::error::Error;
+
+#[derive(Debug, Clone)]
+pub struct WinEncryptError;
+
+#[derive(Debug, Clone)]
+pub struct WinDecryptError;
+
+impl Error for WinEncryptError {}
+impl Error for WinDecryptError {}
+
+impl fmt::Display for WinEncryptError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Windows encryption error")
+    }
+}
+
+impl fmt::Display for WinDecryptError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Windows decryption error")
+    }
+}
+
+pub fn decrypt(encrypted: &str) -> Result<String, Box<dyn Error>> {
+    let mut et_bytes = hex::decode(encrypted)?;
 
     let p_data_in = &mut CRYPTOAPI_BLOB {
         cb_data: et_bytes.len() as _,
@@ -44,11 +67,11 @@ pub fn decrypt(encrypted: &str) -> Result<String, windows::Error> {
         }
         Ok(output)
     } else {
-        Err(Error::new(ErrorCode::default(), "Failed to decrypt."))
+        Err(Box::new(WinDecryptError))
     }
 }
 
-pub fn encrypt(input: &str) -> Result<String, windows::Error> {
+pub fn encrypt(input: &str) -> Result<String, WinEncryptError> {
     let mut input_utf16: Vec<u16> = input.encode_utf16().collect();
     // input_utf16.push(0);
 
@@ -81,7 +104,7 @@ pub fn encrypt(input: &str) -> Result<String, windows::Error> {
         }
         Ok(output)
     } else {
-        Err(Error::new(ErrorCode::default(), "Failed to encrypt."))
+        Err(WinEncryptError)
     }
 }
 

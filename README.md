@@ -1,6 +1,6 @@
 ## win_crypto
 
-A simple wrapper for Microsoft Windows DPAPI for encrypting and decrypting strings for data at rest. Use it in cases where you have password authentication but don't want to keep plaintext passwords in your code. If you've ever used powershell to store passwords this way, this should be familiar:
+A simple wrapper for Microsoft Windows DPAPI for encrypting and decrypting strings for data at rest. Use it in cases where you have password authentication but don't want to keep plaintext passwords in your code and for whatever reason you can't use keyring.rs. If you've ever used powershell to store passwords this way, this should be familiar:
 
 ```powershell
 # create a token
